@@ -3,13 +3,14 @@
  * @author: Sarthak Sahu, Santosh Gupta, Sanat Kumar Jain
  */
 /*
- * Upload this code to buggy1
+ * Upload this code to second buggy.
  */
+
 #include <NewPing.h>
 
 int TRIGGER = 13;
 int ECHO = 12;
-int threshold = 100;
+long threshold = 100;
 NewPing sonar(TRIGGER, ECHO);
 
 int motorRF = 5;
@@ -44,189 +45,8 @@ void setup() {
   pinMode(motorLB, OUTPUT);
   pinMode(motorRB, OUTPUT);
   start();
-  //start1();
 }
 
-void forward(){  
-  digitalWrite(motorLB, LOW);
-  digitalWrite(motorRB, LOW);
-  digitalWrite(motorRF, HIGH);
-  digitalWrite(motorLF, HIGH);
-//  delay(2);
-//  stopMoving();
-//  delayMicroseconds(20);
-}
-
-void turnRight(){
-  digitalWrite(motorRF, LOW);
-  digitalWrite(motorLF, HIGH);
-//  delay(2);
-//  stopMoving();
-//  delayMicroseconds(20);
-  
-}
-
-void turnLeft(){
-  digitalWrite(motorRF, HIGH);
-  digitalWrite(motorLF, LOW);
-//  delay(2);
-//  stopMoving();
-//  delayMicroseconds(20);
-}
-
-void stopMoving(){
-  digitalWrite(motorLB, LOW);
-  digitalWrite(motorRB, LOW);
-  digitalWrite(motorLF, LOW);
-  digitalWrite(motorRF, LOW);
-}
-
-void park(){
-    while(true){
-    int lSensorValue = analogRead(lSensor);
-    lSensorValue = map(lSensorValue, 0, 1023, 0, 255);
-    int rSensorValue = analogRead(rSensor);
-    rSensorValue = map(rSensorValue, 0, 1023, 0, 255);
-    
-    if(rSensorValue < threshold && lSensorValue < threshold){
-      stopMoving();
-      Serial.println("S");
-      while(true){
-      }
-    }else if(rSensorValue < threshold && lSensorValue > threshold){
-      turnRight();
-    }else if(rSensorValue > threshold && lSensorValue < threshold){
-      turnLeft();
-    }else if(rSensorValue > threshold && lSensorValue > threshold){
-      forward();
-    }
-  }
-}
-/*
-* Change this function accordingly for gold task.
-* make leftRotateAtIntersection() for gold task.
-*/
-void rightRotateAtIntersection(){
-  logic1 = false;
-  logic2 = false;
-  stopMoving();
-  while(true){
-    int lSensorValue = analogRead(lSensor);
-    lSensorValue = map(lSensorValue, 0, 1023, 0, 255);
-    int rSensorValue = analogRead(rSensor);
-    rSensorValue = map(rSensorValue, 0, 1023, 0, 255);
-
-    if(lSensorValue < threshold && rSensorValue < threshold && !logic1){
-      digitalWrite(motorLF,HIGH);
-      digitalWrite(motorRB,HIGH);
-      logic1 = true;
-    }else if(rSensorValue > threshold && logic1){
-      digitalWrite(motorLF,HIGH);
-      digitalWrite(motorRB,HIGH);
-      logic2 = true;  
-    }
-//    else if(lSensorValue < threshold && rSensorValue > threshold){
-//      digitalWrite(motorLF,HIGH);
-//      digitalWrite(motorRB,HIGH);
-//      logic1 = true;
-//    }
-//    else if(lSensorValue > threshold && rSensorValue > threshold){
-//      stopMoving();
-//      logic2 = true;
-//    }
-    if(logic1 == true && logic2 == true){
-      logic1 = false;
-      logic2 = false;
-      break;
-    }
-    
-  }
-}
-
-//void rotateTillBothBecomeWhite(){
-//  logic1 = false;
-//  logic2 = false;
-//  while(true){
-//    int lSensorValue = analogRead(lSensor);
-//    lSensorValue = map(lSensorValue, 0, 1023, 0, 255);
-//    int rSensorValue = analogRead(rSensor);
-//    rSensorValue = map(rSensorValue, 0, 1023, 0, 255);
-//    
-//    if(lSensorValue > 100 && rSensorValue > 100){
-//      break;
-//    }
-//    digitalWrite(motorRF, HIGH);
-//    digitalWrite(motorLB, HIGH);
-//  }
-//  digitalWrite(motorLB, LOW);
-//  digitalWrite(motorRB, LOW);
-//  //rotate till sensors allign perfectly.
-//  while(true){
-//    int lSensorValue = analogRead(lSensor);
-//    lSensorValue = map(lSensorValue, 0, 1023, 0, 255);
-//    int rSensorValue = analogRead(rSensor);
-//    rSensorValue = map(rSensorValue, 0, 1023, 0, 255);
-//    
-//    digitalWrite(motorRF, HIGH);
-//    digitalWrite(motorLB, HIGH);
-//
-//    if(lSensorValue < 100 && rSensorValue > 100 && !logic1){
-//      logic1 = true;
-//    }
-//    if(lSensorValue > 100 && rSensorValue > 100 && logic1){
-//      logic2 = true;
-//    }
-//    if(logic1 == true && logic2 == true){
-//      break;  
-//    }
-//  }
-//  digitalWrite(motorLB, LOW);
-//  digitalWrite(motorRB, LOW);
-//  park();
-//}
-
-
-void rotateTillBothBecomeWhite(){
-  logic1 = false;
-  logic2 = false;
-  while(true){
-    int lSensorValue = analogRead(lSensor);
-    lSensorValue = map(lSensorValue, 0, 1023, 0, 255);
-    int rSensorValue = analogRead(rSensor);
-    rSensorValue = map(rSensorValue, 0, 1023, 0, 255);
-    
-    if(lSensorValue >threshold && rSensorValue >threshold){
-      break;
-    }
-    digitalWrite(motorRF, HIGH);
-    digitalWrite(motorLB, HIGH);
-  }
-  digitalWrite(motorLB, LOW);
-  digitalWrite(motorRB, LOW);
-//  rotate till sensors allign perfectly.
-  while(true){
-    int lSensorValue = analogRead(lSensor);
-    lSensorValue = map(lSensorValue, 0, 1023, 0, 255);
-    int rSensorValue = analogRead(rSensor);
-    rSensorValue = map(rSensorValue, 0, 1023, 0, 255);
-    
-    digitalWrite(motorRF, HIGH);
-    digitalWrite(motorLB, HIGH);
-
-    if(lSensorValue <threshold && rSensorValue >threshold && !logic1){
-      logic1 = true;
-    }
-    if(lSensorValue >threshold && rSensorValue >threshold && logic1){
-      logic2 = true;
-    }
-    if(logic1 == true && logic2 == true){
-      break;  
-    }
-  }
-  digitalWrite(motorLB, LOW);
-  digitalWrite(motorRB, LOW);
-  park();
-}
 
 void slowForward(){
   digitalWrite(motorLB, LOW);
@@ -257,6 +77,122 @@ void slowRight(){
   delay(3);
 }
 
+
+
+
+void forward(){
+  digitalWrite(motorRF, HIGH);
+  digitalWrite(motorLF, HIGH);
+}
+
+void turnRight(){
+  digitalWrite(motorRF, LOW);
+  digitalWrite(motorLF, HIGH);
+}
+
+void turnLeft(){
+  digitalWrite(motorRF, HIGH);
+  digitalWrite(motorLF, LOW);
+}
+
+void stopMoving(){
+  digitalWrite(motorRB, LOW);
+  digitalWrite(motorLB, LOW);
+  digitalWrite(motorLF, LOW);
+  digitalWrite(motorRF, LOW);
+}
+
+void park(){
+    while(true){
+    int lSensorValue = analogRead(lSensor);
+    lSensorValue = map(lSensorValue, 0, 1023, 0, 255);
+    int rSensorValue = analogRead(rSensor);
+    rSensorValue = map(rSensorValue, 0, 1023, 0, 255);
+    
+    if(rSensorValue <threshold&& lSensorValue < 100){
+      stopMoving();
+      while(true){
+      }
+    }else if(rSensorValue <threshold&& lSensorValue > 100){
+      turnRight();
+    }else if(rSensorValue >threshold&& lSensorValue < 100){
+      turnLeft();
+    }else if(rSensorValue >threshold&& lSensorValue > 100){
+      forward();
+    }
+  }
+}
+void leftRotateAtIntersection(){
+  logic1 = false;
+  logic2 = false;
+  stopMoving();
+  while(true){
+    int lSensorValue = analogRead(lSensor);
+    lSensorValue = map(lSensorValue, 0, 1023, 0, 255);
+    int rSensorValue = analogRead(rSensor);
+    rSensorValue = map(rSensorValue, 0, 1023, 0, 255);
+    digitalWrite(motorLF,HIGH);
+    digitalWrite(motorRB,HIGH);
+    if(lSensorValue < threshold && rSensorValue < threshold && !logic1){
+      digitalWrite(motorLF,HIGH);
+      digitalWrite(motorRB,HIGH);
+      logic1 = true;
+    }else if(rSensorValue > threshold && lSensorValue < threshold && logic1 == true){
+      forward();
+      logic2 = true;
+    }
+    if(logic1 == true && logic2 == true){
+      logic1 = false;
+      logic2 = false;
+      stopMoving();
+      break;
+    }
+  }
+}
+
+
+
+void rotateTillBothBecomeWhite(){
+  logic1 = false;
+  logic2 = false;
+  while(true){
+    int lSensorValue = analogRead(lSensor);
+    lSensorValue = map(lSensorValue, 0, 1023, 0, 255);
+    int rSensorValue = analogRead(rSensor);
+    rSensorValue = map(rSensorValue, 0, 1023, 0, 255);
+    
+    if(lSensorValue > threshold && rSensorValue > threshold){
+      break;
+    }
+    digitalWrite(motorLF, HIGH);
+    digitalWrite(motorRB, HIGH);
+  }
+  digitalWrite(motorLF, LOW);
+  digitalWrite(motorRB, LOW);
+//  rotate till sensors allign perfectly.
+  while(true){
+    int lSensorValue = analogRead(lSensor);
+    lSensorValue = map(lSensorValue, 0, 1023, 0, 255);
+    int rSensorValue = analogRead(rSensor);
+    rSensorValue = map(rSensorValue, 0, 1023, 0, 255);
+    
+    digitalWrite(motorLF, HIGH);
+    digitalWrite(motorRB, HIGH);
+
+    if(lSensorValue < threshold && rSensorValue > threshold&& !logic1){
+      logic1 = true;
+    }
+    if(lSensorValue >threshold&& rSensorValue >threshold&& logic1){
+      logic2 = true;
+    }
+    if(logic1 == true && logic2 == true){
+      break;  
+    }
+  }
+  digitalWrite(motorLB,LOW);
+  digitalWrite(motorRB,LOW);
+  park();
+}
 /*
  * This is the actual function we will use for the silver as well as gold task.
  */
@@ -269,15 +205,15 @@ void start1(){
     int rSensorValue = analogRead(rSensor);
     rSensorValue = map(rSensorValue, 0, 1023, 0, 255);
     
-    if(endTime >=1000){
+    if(endTime >= 1000){
       distance = sonar.ping_cm();
       if(distance < 20 && logic1 == false){
         stopMoving();
         delay(1000);
         logic1 = true;
       }
-      
-      if(sonar.ping_cm() >threshold && logic1 == true){
+ 
+      if(sonar.ping_cm() > 100 && logic1 == true){
         logic2 = true;
       }
       if(logic1 == true && logic2 == true){
@@ -287,17 +223,17 @@ void start1(){
       }
       endTime = 0;
     }
-    if(rSensorValue <threshold && lSensorValue <threshold){
-      // rightRotateAtIntersection();
+    if(rSensorValue < threshold && lSensorValue < threshold){
+      //leftRotateAtIntersection();
       forward();
-    }else if(rSensorValue <threshold && lSensorValue >threshold){
+    }else if(rSensorValue < threshold && lSensorValue > threshold){
       turnRight();
-    }else if(rSensorValue >threshold && lSensorValue <threshold){
+    }else if(rSensorValue >threshold && lSensorValue < threshold){
       turnLeft();
-    }else if(rSensorValue >threshold && lSensorValue >threshold){
+    }else if(rSensorValue >threshold && lSensorValue > threshold){
       forward();
     }
-    if(obstacleCounter == 9){
+    if(obstacleCounter == 3){
       break;
     }
     endTime++;
@@ -308,19 +244,19 @@ void start1(){
     int rSensorValue = analogRead(rSensor);
     rSensorValue = map(rSensorValue, 0, 1023, 0, 255);
     
-    if(rSensorValue < threshold && lSensorValue <threshold){
-      //rightRotateAtIntersection();
+    if(rSensorValue <100 && lSensorValue < 100){
+      //leftRotateAtIntersection();
       forward();
       logic1 = true;
-    }else if(rSensorValue <threshold && lSensorValue >threshold){
+    }else if(rSensorValue < threshold && lSensorValue > threshold){
       turnRight();
       if(logic1 == true)
         logic2 = true;
-    }else if(rSensorValue >threshold && lSensorValue <threshold){
+    }else if(rSensorValue >threshold && lSensorValue < threshold){
       turnLeft();
       if(logic1 == true)
         logic2 = true;
-    }else if(rSensorValue >threshold && lSensorValue >threshold){
+    }else if(rSensorValue >threshold && lSensorValue > threshold){
       forward();
     }
     if(logic1 == true && logic2 == true){
@@ -340,13 +276,9 @@ void start1(){
   rotateTillBothBecomeWhite();
 }
 
-
 void loop() {
 }
 
-/*
- * This is just a function to test the buggy without the Ultrasonic sensor.
- */
 void start(){
   while(true){
     int lSensorValue = analogRead(lSensor);
@@ -356,7 +288,7 @@ void start(){
     
     if(rSensorValue <threshold && lSensorValue <threshold){
       //rightRotateAtIntersection();
-      slowForward();
+      leftRotateAtIntersection();
       logic1 = true;
     }else if(rSensorValue <threshold && lSensorValue >threshold){
       slowRight();

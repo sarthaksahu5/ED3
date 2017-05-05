@@ -18,7 +18,7 @@ void setup() {
 int distance = 0;
 void loop() {
   
-  if(endTime >= 100000 && counter < 9)
+  if(endTime >= 1000 && counter < 9)
   {
     if(sonar.ping_cm() < 15 && logic1 == false)
     {
@@ -46,7 +46,7 @@ void loop() {
       
     }
   }
-//  if(endTime >= 100000){
+//  if(endTime >= 10000){
 //    Serial.println(sonar.ping_cm());
 //    endTime = 0;
 //  }
